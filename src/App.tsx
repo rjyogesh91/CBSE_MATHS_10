@@ -21,7 +21,7 @@ const CURRENT_TEST_CONFIG = {
 
 // CBSE Class 10 Mathematics Chapter-wise Question Blueprint
 const CBSE_QUESTION_BLUEPRINT = [
-  { chapter: "Real Numbers", marks1: 1, marks2: 0, marks3: 2, marks4: 0, total: 999 },
+  { chapter: "Real Numbers", marks1: 65, marks2: 0, marks3: 2, marks4: 0, total: 999 },
   { chapter: "Polynomials", marks1: 2, marks2: 2, marks3: 0, marks4: 0, total: 4 },
   { chapter: "Pair of Linear Equations in Two Variables", marks1: 2, marks2: 2, marks3: 3, marks4: 0, total: 7 },
   { chapter: "Quadratic Equations", marks1: 2, marks2: 0, marks3: 3, marks4: 0, total: 5 },
