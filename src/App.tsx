@@ -15,6 +15,7 @@ const CURRENT_TEST_CONFIG = {
     { name: "Geometry", marks: 25 },
     { name: "Trigonometry", marks: 25 },
     { name: "Statistics", marks: 25 }
+    { name: "Statistics", marks: 25 }
   ]
 };
 // ==========================================
