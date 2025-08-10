@@ -13,8 +13,8 @@ const CURRENT_TEST_CONFIG = {
   topics: [
     { name: "Algebra & Functions", marks: 25 },
     { name: "Geometry", marks: 25 },
-    { name: "Trigonometry", marks: 25 },
-    { name: "Statistics", marks: 250 }
+    { name: "Trigonometry", marks: 15 },
+    { name: "Statistics", marks: 20 }
   ]
 };
 // ==========================================
