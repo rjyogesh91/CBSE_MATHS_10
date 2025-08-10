@@ -272,7 +272,7 @@ function App() {
                 onClick={() => setShowOnlineTest(true)}
                 className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
               >
-                Try Online Test
+                Try Online Test Choose online mode
               </button>
             </div>
           </div>
