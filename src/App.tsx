@@ -284,7 +284,7 @@ function App() {
             <div className="grid md:grid-cols-4 gap-6">
               <div className="text-center p-4 bg-blue-50 rounded-lg">
                 <h4 className="font-semibold text-blue-900 mb-2">Algebra & Functions</h4>
-                <div className="text-2xl font-bold text-blue-600">25</div>
+                <div className="text-2xl font-bold text-blue-600">28</div>
                 <div className="text-sm text-blue-700">Marks</div>
               </div>
               <div className="text-center p-4 bg-green-50 rounded-lg">
