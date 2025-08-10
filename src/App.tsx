@@ -14,7 +14,7 @@ const CURRENT_TEST_CONFIG = {
     { name: "Algebra & Functions", marks: 25 },
     { name: "Geometry", marks: 25 },
     { name: "Trigonometry", marks: 25 },
-    { name: "Statistics", marks: 25 }
+    { name: "Statistics", marks: 250 }
   ]
 };
 // ==========================================
