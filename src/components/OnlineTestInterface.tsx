@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Upload, Download, Clock, FileText, Send, AlertCircle } from 'lucide-react';
+import { Upload, Download, Clock, FileText, Send, AlertCircle, CheckCircle } from 'lucide-react';
+import { googleDriveService, UploadProgress } from '../utils/googleDriveApi';
+import GoogleDriveAuth from './GoogleDriveAuth';
 
 interface OnlineTestInterfaceProps {
   testId: string;
@@ -10,6 +12,13 @@ export default function OnlineTestInterface({ testId, onClose }: OnlineTestInter
   const [timeLeft, setTimeLeft] = useState(180); // 3 hours in minutes
   const [answerSheet, setAnswerSheet] = useState<File | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<UploadProgress | null>(null);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [isGoogleSignedIn, setIsGoogleSignedIn] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
 
   const formatTime = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
@@ -20,27 +29,71 @@ export default function OnlineTestInterface({ testId, onClose }: OnlineTestInter
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setAnswerSheet(file);
+      // Validate file
+      const validation = googleDriveService.validateFile(file);
+      if (validation.isValid) {
+        setAnswerSheet(file);
+        setUploadError(null);
+        setUploadSuccess(false);
+      } else {
+        setUploadError(validation.error || 'Invalid file');
+        setAnswerSheet(null);
+      }
     }
   };
 
-  const handleSubmit = () => {
-    if (answerSheet) {
+  const handleSubmit = async () => {
+    if (!answerSheet) return;
+
+    try {
+      setIsUploading(true);
+      setUploadError(null);
+      setUploadProgress(null);
+
+      // Generate unique filename for answer sheet
+      const studentId = 'student-123'; // This should come from props or context
+      const fileName = googleDriveService.generateAnswerSheetFileName(studentId, answerSheet.name);
+      
+      // Upload to Google Drive
+      const fileId = await googleDriveService.uploadFile(
+        answerSheet,
+        import.meta.env.VITE_ANSWER_SHEETS_FOLDER_ID,
+        fileName,
+        (progress) => setUploadProgress(progress)
+      );
+
+      console.log('File uploaded successfully with ID:', fileId);
+      setUploadSuccess(true);
       setIsSubmitted(true);
-      // Handle submission logic here
+      
+      // Show success message and close after delay
       setTimeout(() => {
-        alert('Test submitted successfully!');
         onClose();
-      }, 2000);
+      }, 3000);
+
+    } catch (error) {
+      console.error('Upload failed:', error);
+      setUploadError(error instanceof Error ? error.message : 'Upload failed. Please try again.');
+    } finally {
+      setIsUploading(false);
+      setUploadProgress(null);
     }
   };
 
-  const downloadQuestionPaper = () => {
-    // Simulate downloading question paper
-    const link = document.createElement('a');
-    link.href = '#'; // This would be the actual PDF URL
-    link.download = `question-paper-${testId}.pdf`;
-    link.click();
+  const downloadQuestionPaper = async () => {
+    try {
+      setIsDownloading(true);
+      setDownloadError(null);
+      
+      const fileId = import.meta.env.VITE_QUESTION_PAPER_FILE_ID;
+      await googleDriveService.downloadFile(fileId, `question-paper-${testId}.pdf`);
+      
+    } catch (error) {
+      console.error('Download failed:', error);
+      setDownloadError(error instanceof Error ? error.message : 'Download failed. Please try again.');
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   if (isSubmitted) {
@@ -48,11 +101,11 @@ export default function OnlineTestInterface({ testId, onClose }: OnlineTestInter
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
         <div className="bg-white rounded-xl max-w-md w-full p-8 text-center">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Send className="h-8 w-8 text-green-600" />
+            <CheckCircle className="h-8 w-8 text-green-600" />
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-2">Test Submitted!</h3>
           <p className="text-gray-600 mb-6">
-            Your answer sheet has been uploaded successfully. Results will be available within 24 hours.
+            Your answer sheet has been uploaded to Google Drive successfully. Results will be available within 24 hours.
           </p>
           <button
             onClick={onClose}
@@ -89,6 +142,11 @@ export default function OnlineTestInterface({ testId, onClose }: OnlineTestInter
         </div>
 
         <div className="p-6">
+          {/* Google Drive Authentication */}
+          <div className="mb-6">
+            <GoogleDriveAuth onAuthChange={setIsGoogleSignedIn} />
+          </div>
+
           <div className="grid md:grid-cols-2 gap-8">
             {/* Question Paper Section */}
             <div className="space-y-6">
@@ -100,12 +158,38 @@ export default function OnlineTestInterface({ testId, onClose }: OnlineTestInter
                 <p className="text-gray-600 mb-4">
                   Download the question paper to start your test. The paper contains 100 marks worth of questions.
                 </p>
+                
+                {downloadError && (
+                  <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <AlertCircle className="h-4 w-4 text-red-600" />
+                      <span className="text-red-800 text-sm">{downloadError}</span>
+                    </div>
+                  </div>
+                )}
+                
                 <button
                   onClick={downloadQuestionPaper}
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 flex items-center space-x-2"
+                  disabled={!isGoogleSignedIn || isDownloading}
+                  className={`px-6 py-3 rounded-lg flex items-center space-x-2 font-medium transition-colors ${
+                    !isGoogleSignedIn || isDownloading
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
                 >
-                  <Download className="h-5 w-5" />
-                  <span>Download Question Paper</span>
+                  {isDownloading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                      <span>Downloading...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Download className="h-5 w-5" />
+                      <span>
+                        {!isGoogleSignedIn ? 'Sign in to Download' : 'Download Question Paper'}
+                      </span>
+                    </>
+                  )}
                 </button>
               </div>
 
@@ -146,25 +230,46 @@ export default function OnlineTestInterface({ testId, onClose }: OnlineTestInter
                   <input
                     type="file"
                     id="answerSheet"
-                    accept=".pdf,.jpg,.jpeg,.png"
+                    accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
                     onChange={handleFileUpload}
                     className="hidden"
+                    disabled={!isGoogleSignedIn}
                   />
                   <label
                     htmlFor="answerSheet"
-                    className="cursor-pointer flex flex-col items-center space-y-3"
+                    className={`flex flex-col items-center space-y-3 ${
+                      !isGoogleSignedIn ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
+                    }`}
                   >
                     <Upload className="h-12 w-12 text-gray-400" />
                     <div>
                       <p className="text-lg font-medium text-gray-900">
-                        Click to upload your answer sheet
+                        {!isGoogleSignedIn ? 'Sign in to upload' : 'Click to upload your answer sheet'}
                       </p>
                       <p className="text-sm text-gray-600">
-                        PDF, JPG, JPEG, PNG up to 10MB
+                        PDF, DOC, DOCX, JPG, JPEG, PNG up to 50MB
                       </p>
                     </div>
                   </label>
                 </div>
+
+                {uploadError && (
+                  <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <AlertCircle className="h-4 w-4 text-red-600" />
+                      <span className="text-red-800 text-sm">{uploadError}</span>
+                    </div>
+                  </div>
+                )}
+
+                {uploadSuccess && (
+                  <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <span className="text-green-800 text-sm">File uploaded successfully to Google Drive!</span>
+                    </div>
+                  </div>
+                )}
 
                 {answerSheet && (
                   <div className="mt-4 p-4 bg-white rounded-lg border">
@@ -184,6 +289,21 @@ export default function OnlineTestInterface({ testId, onClose }: OnlineTestInter
                       >
                         Remove
                       </button>
+                    </div>
+                  </div>
+                )}
+
+                {uploadProgress && (
+                  <div className="mt-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm font-medium text-gray-700">Uploading...</span>
+                      <span className="text-sm text-gray-600">{uploadProgress.percentage}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${uploadProgress.percentage}%` }}
+                      ></div>
                     </div>
                   </div>
                 )}
@@ -217,15 +337,24 @@ export default function OnlineTestInterface({ testId, onClose }: OnlineTestInter
 
               <button
                 onClick={handleSubmit}
-                disabled={!answerSheet}
+                disabled={!answerSheet || !isGoogleSignedIn || isUploading}
                 className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 ${
-                  answerSheet
+                  answerSheet && isGoogleSignedIn && !isUploading
                     ? 'bg-green-600 text-white hover:bg-green-700'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }`}
               >
-                <Send className="h-5 w-5" />
-                <span>Submit Test</span>
+                {isUploading ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                    <span>Uploading...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="h-5 w-5" />
+                    <span>Submit Test</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
