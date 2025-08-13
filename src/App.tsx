@@ -42,13 +42,23 @@ function App() {
     phone: '',
     email: '',
     parentName: '',
-    school: ''
+    school: '',
+    testMode: ''
   });
 
   const [showStudentDashboard, setShowStudentDashboard] = useState(false);
   const [showOnlineTest, setShowOnlineTest] = useState(false);
   const [showAdminDashboard, setShowAdminDashboard] = useState(false);
-  const [selectedTestMode, setSelectedTestMode] = useState<'online' | 'offline' | null>(null);
+
+  // Function to scroll to registration and pre-select test mode
+  const handleTestModeSelection = (mode: 'online' | 'offline') => {
+    setFormData(prev => ({ ...prev, testMode: mode }));
+    // Scroll to registration section
+    const registerSection = document.getElementById('register');
+    if (registerSection) {
+      registerSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -62,7 +72,7 @@ function App() {
     // Handle form submission here
     console.log('Form submitted:', formData);
     alert('Thank you for registering! We will contact you soon.');
-    setFormData({ name: '', phone: '', email: '', parentName: '', school: '' });
+    setFormData({ name: '', phone: '', email: '', parentName: '', school: '', testMode: '' });
   };
 
   return (
@@ -72,49 +82,37 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <Calculator className="h-8 w-8 text-blue-600" />
+              <Calculator className="h-8 w-8 text-orange-600" />
               <span className="text-xl font-bold text-gray-900">MathAce Test Series</span>
             </div>
             <nav className="hidden md:flex space-x-8">
-              <a href="#about" className="text-gray-700 hover:text-blue-600 transition-colors">About</a>
-              <a href="#schedule" className="text-gray-700 hover:text-blue-600 transition-colors">Schedule</a>
-              <a href="#test-modes" className="text-gray-700 hover:text-blue-600 transition-colors">Test Modes</a>
-              <a href="#benefits" className="text-gray-700 hover:text-blue-600 transition-colors">Benefits</a>
-              <button
-                onClick={() => setShowStudentDashboard(true)}
-                className="text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                Student Login
-              </button>
-              <button
-                onClick={() => setShowAdminDashboard(true)}
-                className="text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                Admin
-              </button>
-              <a href="#register" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Register Now</a>
+              <a href="#about" className="text-gray-700 hover:text-orange-600 transition-colors">About</a>
+              <a href="#schedule" className="text-gray-700 hover:text-orange-600 transition-colors">Schedule</a>
+              <a href="#test-modes" className="text-gray-700 hover:text-orange-600 transition-colors">Test Modes</a>
+              <a href="#benefits" className="text-gray-700 hover:text-orange-600 transition-colors">Benefits</a>
+              <a href="#register" className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors">Register Now</a>
             </nav>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="pt-20 pb-16 bg-gradient-to-br from-blue-50 to-indigo-100">
+      <section className="pt-20 pb-16 bg-gradient-to-br from-orange-50 to-red-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
                 Master Class 10 
-                <span className="text-blue-600 block">CBSE Mathematics</span>
+                <span className="text-orange-600 block">CBSE Mathematics</span>
               </h1>
               <p className="text-xl text-gray-600 mb-8">
                 Join our comprehensive test series every weekend and boost your math scores with expert guidance and regular practice.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <a href="#register" className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center">
+                <a href="#register" className="bg-orange-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-orange-700 transition-colors text-center">
                   Enroll Now
                 </a>
-                <a href="#about" className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition-colors text-center">
+                <a href="#about" className="border-2 border-orange-600 text-orange-600 px-8 py-4 rounded-lg font-semibold hover:bg-orange-50 transition-colors text-center">
                   Learn More
                 </a>
               </div>
@@ -148,9 +146,9 @@ function App() {
                     <thead>
                       <tr className="bg-gray-50">
                         <th className="text-left p-2 font-semibold text-gray-900">Chapter</th>
-                        <th className="text-center p-2 font-semibold text-blue-600">1M</th>
+                        <th className="text-center p-2 font-semibold text-orange-600">1M</th>
                         <th className="text-center p-2 font-semibold text-green-600">2M</th>
-                        <th className="text-center p-2 font-semibold text-orange-600">3M</th>
+                        <th className="text-center p-2 font-semibold text-blue-600">3M</th>
                         <th className="text-center p-2 font-semibold text-purple-600">4M</th>
                         <th className="text-center p-2 font-semibold text-gray-900">Total</th>
                       </tr>
@@ -159,18 +157,18 @@ function App() {
                       {CBSE_QUESTION_BLUEPRINT.map((item, index) => (
                         <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
                           <td className="p-2 text-gray-800 text-xs">{item.chapter}</td>
-                          <td className="text-center p-2 text-blue-600 font-medium">{item.marks1}</td>
+                          <td className="text-center p-2 text-orange-600 font-medium">{item.marks1}</td>
                           <td className="text-center p-2 text-green-600 font-medium">{item.marks2}</td>
-                          <td className="text-center p-2 text-orange-600 font-medium">{item.marks3}</td>
+                          <td className="text-center p-2 text-blue-600 font-medium">{item.marks3}</td>
                           <td className="text-center p-2 text-purple-600 font-medium">{item.marks4}</td>
                           <td className="text-center p-2 text-gray-900 font-bold">{item.total}</td>
                         </tr>
                       ))}
                       <tr className="bg-gray-100 font-bold">
                         <td className="p-2 text-gray-900">Total Questions</td>
-                        <td className="text-center p-2 text-blue-600">28</td>
+                        <td className="text-center p-2 text-orange-600">28</td>
                         <td className="text-center p-2 text-green-600">12</td>
-                        <td className="text-center p-2 text-orange-600">8</td>
+                        <td className="text-center p-2 text-blue-600">8</td>
                         <td className="text-center p-2 text-purple-600">3</td>
                         <td className="text-center p-2 text-gray-900">80</td>
                       </tr>
@@ -189,7 +187,7 @@ function App() {
       </section>
 
       {/* Test Modes Section */}
-      <section id="test-modes" className="py-16 bg-gradient-to-br from-indigo-50 to-blue-100">
+      <section id="test-modes" className="py-16 bg-gradient-to-br from-orange-50 to-amber-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
@@ -202,8 +200,8 @@ function App() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow">
               <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <LocationIcon className="h-8 w-8 text-blue-600" />
+                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <LocationIcon className="h-8 w-8 text-orange-600" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Offline Tests</h3>
                 <p className="text-gray-600">Traditional classroom experience</p>
@@ -231,8 +229,8 @@ function App() {
                 </li>
               </ul>
               <button
-                onClick={() => setSelectedTestMode('offline')}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                onClick={() => handleTestModeSelection('offline')}
+                className="w-full bg-orange-600 text-white py-3 rounded-lg font-semibold hover:bg-orange-700 transition-colors"
               >
                 Choose Offline Mode
               </button>
@@ -240,8 +238,8 @@ function App() {
             
             <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-shadow">
               <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Monitor className="h-8 w-8 text-green-600" />
+                <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Monitor className="h-8 w-8 text-amber-600" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Online Tests</h3>
                 <p className="text-gray-600">Convenient home-based testing</p>
@@ -269,10 +267,10 @@ function App() {
                 </li>
               </ul>
               <button
-                onClick={() => setShowOnlineTest(true)}
-                className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                onClick={() => handleTestModeSelection('online')}
+                className="w-full bg-amber-600 text-white py-3 rounded-lg font-semibold hover:bg-amber-700 transition-colors"
               >
-                Choose online mode
+                Choose Online Mode
               </button>
             </div>
           </div>
@@ -282,25 +280,25 @@ function App() {
               Chapter-wise Marking Scheme
             </h3>
             <div className="grid md:grid-cols-4 gap-6">
-              <div className="text-center p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-semibold text-blue-900 mb-2">Algebra & Functions</h4>
-                <div className="text-2xl font-bold text-blue-600">28</div>
-                <div className="text-sm text-blue-700">Marks</div>
-              </div>
-              <div className="text-center p-4 bg-green-50 rounded-lg">
-                <h4 className="font-semibold text-green-900 mb-2">Geometry</h4>
-                <div className="text-2xl font-bold text-green-600">25</div>
-                <div className="text-sm text-green-700">Marks</div>
-              </div>
               <div className="text-center p-4 bg-orange-50 rounded-lg">
-                <h4 className="font-semibold text-orange-900 mb-2">Trigonometry</h4>
-                <div className="text-2xl font-bold text-orange-600">25</div>
+                <h4 className="font-semibold text-orange-900 mb-2">Algebra & Functions</h4>
+                <div className="text-2xl font-bold text-orange-600">28</div>
                 <div className="text-sm text-orange-700">Marks</div>
               </div>
-              <div className="text-center p-4 bg-purple-50 rounded-lg">
-                <h4 className="font-semibold text-purple-900 mb-2">Statistics & Probability</h4>
-                <div className="text-2xl font-bold text-purple-600">25</div>
-                <div className="text-sm text-purple-700">Marks</div>
+              <div className="text-center p-4 bg-amber-50 rounded-lg">
+                <h4 className="font-semibold text-amber-900 mb-2">Geometry</h4>
+                <div className="text-2xl font-bold text-amber-600">25</div>
+                <div className="text-sm text-amber-700">Marks</div>
+              </div>
+              <div className="text-center p-4 bg-red-50 rounded-lg">
+                <h4 className="font-semibold text-red-900 mb-2">Trigonometry</h4>
+                <div className="text-2xl font-bold text-red-600">25</div>
+                <div className="text-sm text-red-700">Marks</div>
+              </div>
+              <div className="text-center p-4 bg-yellow-50 rounded-lg">
+                <h4 className="font-semibold text-yellow-900 mb-2">Statistics & Probability</h4>
+                <div className="text-2xl font-bold text-yellow-600">25</div>
+                <div className="text-sm text-yellow-700">Marks</div>
               </div>
             </div>
             <div className="mt-6 text-center">
@@ -325,36 +323,36 @@ function App() {
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-blue-50 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
-              <BookOpen className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+            <div className="bg-orange-50 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
+              <BookOpen className="h-12 w-12 text-orange-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-3">CBSE Aligned</h3>
               <p className="text-gray-600">
                 All tests are designed according to the latest CBSE syllabus and exam pattern for Class 10 Mathematics.
               </p>
             </div>
-            <div className="bg-green-50 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
-              <TrendingUp className="h-12 w-12 text-green-600 mx-auto mb-4" />
+            <div className="bg-amber-50 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
+              <TrendingUp className="h-12 w-12 text-amber-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Performance Tracking</h3>
               <p className="text-gray-600">
                 Comprehensive analytics dashboard with chapter-wise breakdown, progress tracking, and personalized improvement suggestions.
               </p>
             </div>
-            <div className="bg-orange-50 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
-              <Users className="h-12 w-12 text-orange-600 mx-auto mb-4" />
+            <div className="bg-red-50 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
+              <Users className="h-12 w-12 text-red-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Expert Guidance</h3>
               <p className="text-gray-600">
                 Get personalized feedback, detailed solutions, and one-on-one doubt resolution from experienced CBSE mathematics teachers.
               </p>
             </div>
-            <div className="bg-indigo-50 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
-              <BarChart3 className="h-12 w-12 text-indigo-600 mx-auto mb-4" />
+            <div className="bg-yellow-50 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
+              <BarChart3 className="h-12 w-12 text-yellow-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Data Analytics</h3>
               <p className="text-gray-600">
                 Advanced analytics to track student response rates, identify learning patterns, and optimize teaching strategies.
               </p>
             </div>
-            <div className="bg-teal-50 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
-              <UserCheck className="h-12 w-12 text-teal-600 mx-auto mb-4" />
+            <div className="bg-orange-100 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
+              <UserCheck className="h-12 w-12 text-orange-700 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Flexible Options</h3>
               <p className="text-gray-600">
                 Choose between online and offline test modes based on your convenience and learning preferences.
@@ -379,7 +377,7 @@ function App() {
             <div className="space-y-6">
               <div className="bg-white rounded-xl p-6 shadow-md">
                 <div className="flex items-center space-x-4 mb-4">
-                  <Calendar className="h-8 w-8 text-blue-600" />
+                  <Calendar className="h-8 w-8 text-orange-600" />
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900">Every Saturday & Sunday</h3>
                     <p className="text-gray-600">Consistent weekly practice</p>
@@ -388,7 +386,7 @@ function App() {
               </div>
               <div className="bg-white rounded-xl p-6 shadow-md">
                 <div className="flex items-center space-x-4 mb-4">
-                  <Clock className="h-8 w-8 text-green-600" />
+                  <Clock className="h-8 w-8 text-amber-600" />
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900">7:00 AM - 10:00 AM</h3>
                     <p className="text-gray-600">3-hour comprehensive tests</p>
@@ -397,7 +395,7 @@ function App() {
               </div>
               <div className="bg-white rounded-xl p-6 shadow-md">
                 <div className="flex items-center space-x-4 mb-4">
-                  <Award className="h-8 w-8 text-orange-600" />
+                  <Award className="h-8 w-8 text-red-600" />
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900">100 Marks Total</h3>
                     <p className="text-gray-600">Board exam pattern simulation</p>
@@ -442,15 +440,15 @@ function App() {
           </div>
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">95%</div>
+              <div className="text-4xl font-bold text-orange-600 mb-2">95%</div>
               <div className="text-gray-600">Average Score Improvement</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-green-600 mb-2">200+</div>
+              <div className="text-4xl font-bold text-amber-600 mb-2">200+</div>
               <div className="text-gray-600">Students Enrolled</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-orange-600 mb-2">98%</div>
+              <div className="text-4xl font-bold text-red-600 mb-2">98%</div>
               <div className="text-gray-600">Pass Rate</div>
             </div>
           </div>
@@ -488,7 +486,7 @@ function App() {
       </section>
 
       {/* Registration Section */}
-      <section id="register" className="py-16 bg-blue-600">
+      <section id="register" className="py-16 bg-gradient-to-br from-orange-600 to-red-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white">
@@ -501,19 +499,19 @@ function App() {
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="h-6 w-6 text-green-400" />
-                  <span className="text-blue-100">Weekly tests every Saturday & Sunday</span>
+                  <span className="text-orange-100">Weekly tests every Saturday & Sunday</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="h-6 w-6 text-green-400" />
-                  <span className="text-blue-100">Immediate feedback and doubt clearing</span>
+                  <span className="text-orange-100">Immediate feedback and doubt clearing</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="h-6 w-6 text-green-400" />
-                  <span className="text-blue-100">Performance tracking and analysis</span>
+                  <span className="text-orange-100">Performance tracking and analysis</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="h-6 w-6 text-green-400" />
-                  <span className="text-blue-100">Comprehensive student dashboard with analytics</span>
+                  <span className="text-orange-100">Comprehensive student dashboard with analytics</span>
                 </div>
               </div>
             </div>
@@ -526,12 +524,12 @@ function App() {
                   </label>
                   <select
                     name="testMode"
+                    value={formData.testMode}
+                    onChange={(e) => setFormData(prev => ({ ...prev, testMode: e.target.value }))}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
-                    <option value="">Select preferred mode</option>
                     <option value="offline">Offline (At Center)</option>
                     <option value="online">Online (From Home)</option>
-                    <option value="both">Both Options</option>
                   </select>
                 </div>
                 <div>
@@ -544,7 +542,7 @@ function App() {
                     required
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     placeholder="Enter student's full name"
                   />
                 </div>
@@ -558,7 +556,7 @@ function App() {
                     required
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     placeholder="Enter phone number"
                   />
                 </div>
@@ -571,7 +569,7 @@ function App() {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     placeholder="Enter email address"
                   />
                 </div>
@@ -585,7 +583,7 @@ function App() {
                     required
                     value={formData.parentName}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     placeholder="Enter parent/guardian name"
                   />
                 </div>
@@ -599,13 +597,13 @@ function App() {
                     required
                     value={formData.school}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     placeholder="Enter school name"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                  className="w-full bg-orange-600 text-white py-3 rounded-lg font-semibold hover:bg-orange-700 transition-colors"
                 >
                   Register for Test Series
                 </button>
@@ -631,7 +629,7 @@ function App() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-xl p-8 text-center shadow-md hover:shadow-lg transition-shadow">
-              <MapPin className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+              <MapPin className="h-12 w-12 text-orange-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Visit Us</h3>
               <p className="text-gray-600">
                 [Your Tuition Center Address]<br />
@@ -640,10 +638,10 @@ function App() {
               </p>
             </div>
             <div className="bg-white rounded-xl p-8 text-center shadow-md hover:shadow-lg transition-shadow">
-              <Phone className="h-12 w-12 text-green-600 mx-auto mb-4" />
+              <Phone className="h-12 w-12 text-amber-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Call Us</h3>
               <p className="text-gray-600">
-                <a href="tel:+919876543210" className="hover:text-green-600">
+                <a href="tel:+919876543210" className="hover:text-amber-600">
                   +91 98765 43210
                 </a><br />
                 <span className="text-sm">Mon-Fri: 9 AM - 8 PM</span><br />
@@ -651,10 +649,10 @@ function App() {
               </p>
             </div>
             <div className="bg-white rounded-xl p-8 text-center shadow-md hover:shadow-lg transition-shadow">
-              <Mail className="h-12 w-12 text-orange-600 mx-auto mb-4" />
+              <Mail className="h-12 w-12 text-red-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Email Us</h3>
               <p className="text-gray-600">
-                <a href="mailto:info@mathacetuition.com" className="hover:text-orange-600">
+                <a href="mailto:info@mathacetuition.com" className="hover:text-red-600">
                   info@mathacetuition.com
                 </a><br />
                 <span className="text-sm">We'll respond within 24 hours</span>
@@ -670,7 +668,7 @@ function App() {
           <div className="grid md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
-                <Calculator className="h-8 w-8 text-blue-400" />
+                <Calculator className="h-8 w-8 text-orange-400" />
                 <span className="text-xl font-bold">MathAce Test Series</span>
               </div>
               <p className="text-gray-400 mb-4">
@@ -683,10 +681,10 @@ function App() {
             <div>
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#about" className="hover:text-white transition-colors">About</a></li>
-                <li><a href="#schedule" className="hover:text-white transition-colors">Schedule</a></li>
-                <li><a href="#benefits" className="hover:text-white transition-colors">Benefits</a></li>
-                <li><a href="#register" className="hover:text-white transition-colors">Register</a></li>
+                <li><a href="#about" className="hover:text-orange-400 transition-colors">About</a></li>
+                <li><a href="#schedule" className="hover:text-orange-400 transition-colors">Schedule</a></li>
+                <li><a href="#benefits" className="hover:text-orange-400 transition-colors">Benefits</a></li>
+                <li><a href="#register" className="hover:text-orange-400 transition-colors">Register</a></li>
               </ul>
             </div>
             <div>
@@ -710,26 +708,6 @@ function App() {
         </div>
       </footer>
 
-      {/* Modals */}
-      {showStudentDashboard && (
-        <StudentDashboard
-          studentId="student-123"
-          onClose={() => setShowStudentDashboard(false)}
-        />
-      )}
-
-      {showOnlineTest && (
-        <OnlineTestInterface
-          testId="test-123"
-          onClose={() => setShowOnlineTest(false)}
-        />
-      )}
-
-      {showAdminDashboard && (
-        <AdminDashboard
-          onClose={() => setShowAdminDashboard(false)}
-        />
-      )}
     </div>
   );
 }
