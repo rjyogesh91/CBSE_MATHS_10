@@ -19,6 +19,15 @@ const CURRENT_TEST_CONFIG = {
 };
 // ==========================================
 
+// Motivational Quotes for Mathematics
+const MOTIVATIONAL_QUOTES = [
+  "The secret of getting marks is practice, practice and practice!",
+  "Mathematics is not about numbers, equations, or algorithms: it is about understanding.",
+  "Success in mathematics comes to those who are willing to work hard and never give up.",
+  "Every expert was once a beginner. Every pro was once an amateur.",
+  "Practice makes perfect, but perfect practice makes champions!"
+];
+
 // CBSE Class 10 Mathematics Chapter-wise Question Blueprint
 const CBSE_QUESTION_BLUEPRINT = [
   { chapter: "Real Numbers", marks1: 65, marks2: 0, marks3: 2, marks4: 0, total: 999 },
@@ -51,7 +60,7 @@ function App() {
   const [showAdminDashboard, setShowAdminDashboard] = useState(false);
 
   // Function to scroll to registration and pre-select test mode
-  const handleTestModeSelection = (mode: 'online' | 'offline') => {
+  const handleTestModeSelection = (mode: 'online' | 'offline' | 'fasttrack') => {
     setFormData(prev => ({ ...prev, testMode: mode }));
     // Scroll to registration section
     const registerSection = document.getElementById('register');
