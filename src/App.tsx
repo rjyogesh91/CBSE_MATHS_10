@@ -541,8 +541,10 @@ function App() {
                     onChange={(e) => setFormData(prev => ({ ...prev, testMode: e.target.value }))}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
+                    <option value="">Select your preference</option>
                     <option value="offline">Offline (At Center)</option>
                     <option value="online">Online (From Home)</option>
+                    <option value="fasttrack">FastTrack Batch (Sat-Sun 4:30-7:30 PM)</option>
                   </select>
                 </div>
                 <div>
