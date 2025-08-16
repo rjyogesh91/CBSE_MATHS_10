@@ -544,7 +544,7 @@ function App() {
                     <option value="">Select your preference</option>
                     <option value="offline">Offline (At Center)</option>
                     <option value="online">Online (From Home)</option>
-                    <option value="fasttrack">FastTrack Batch (Sat-Sun 4:30-7:30 PM)</option>
+                    <option value="fasttrack">FastTrack Course (Sat-Sun 4:30-7:30 PM)</option>
                   </select>
                 </div>
                 <div>
