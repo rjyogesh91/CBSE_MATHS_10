@@ -108,7 +108,7 @@ function App() {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-20 pb-20 gradient-cool relative overflow-hidden">
+      <section className="pt-20 pb-20 gradient-cool relative overflow-hidden math-bg">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600/90 to-purple-600/90"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center relative z-10">
@@ -167,8 +167,8 @@ function App() {
                     </thead>
                     <tbody>
                       {CBSE_QUESTION_BLUEPRINT.map((item, index) => (
-                        <tr key={index}>
-                          <td className="text-gray-800">{item.chapter}</td>
+                        <tr key={index} className="border-b border-gray-100">
+                          <td className="text-gray-800 py-2 pr-4">{item.chapter}</td>
                           <td className="text-center text-orange-600 font-medium">{item.marks1}</td>
                           <td className="text-center text-green-600 font-medium">{item.marks2}</td>
                           <td className="text-center text-blue-600 font-medium">{item.marks3}</td>
@@ -176,8 +176,8 @@ function App() {
                           <td className="text-center text-gray-900 font-semibold">{item.total}</td>
                         </tr>
                       ))}
-                      <tr className="font-semibold bg-gray-50">
-                        <td className="text-gray-900">Total Questions</td>
+                      <tr className="font-semibold bg-gray-50 border-t-2 border-gray-200">
+                        <td className="text-gray-900 py-3 pr-4">Total Questions</td>
                         <td className="text-center text-orange-600">28</td>
                         <td className="text-center text-green-600">12</td>
                         <td className="text-center text-blue-600">8</td>
@@ -199,7 +199,7 @@ function App() {
       </section>
 
       {/* Test Modes Section */}
-      <section id="test-modes" className="py-20 bg-gray-50">
+      <section id="test-modes" className="py-20 bg-gray-50 math-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -324,7 +324,7 @@ function App() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-white">
+      <section id="about" className="py-20 bg-white math-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -498,7 +498,7 @@ function App() {
       </section>
 
       {/* Registration Section */}
-      <section id="register" className="py-20 gradient-cool relative overflow-hidden">
+      <section id="register" className="py-20 gradient-cool relative overflow-hidden math-bg">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600/90 to-purple-600/90"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center relative z-10">
