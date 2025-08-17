@@ -647,9 +647,10 @@ function App() {
               <MapPin className="h-12 w-12 text-blue-600 mx-auto mb-4 icon-hover" />
               <h3 className="text-xl font-bold text-gray-900 mb-3">Visit Us</h3>
               <p className="text-gray-600">
-                [Your Tuition Center Address]<br />
-                [City, State - PIN]<br />
-                Near [Landmark]
+                Tirumala Residency<br />
+                Hulimangala Main Road<br />
+                Electronic City, Bangalore - 560105<br />
+                Karnataka, India
               </p>
             </div>
             <div className="bg-white rounded-xl shadow-lg p-8 text-center card-hover">
@@ -677,6 +678,97 @@ function App() {
         </div>
       </section>
 
+      {/* Google Maps Location Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Find Us on Map
+            </h2>
+            <p className="text-xl text-gray-600">
+              Located in the heart of Electronic City, Bangalore
+            </p>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <div className="bg-blue-50 rounded-xl p-8 card-hover">
+                <div className="flex items-start space-x-4">
+                  <MapPin className="h-8 w-8 text-blue-600 mt-1 icon-hover" />
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">MathAce Test Series</h3>
+                    <div className="space-y-2 text-gray-700">
+                      <p className="font-semibold">📍 Complete Address:</p>
+                      <p>Tirumala Residency</p>
+                      <p>Hulimangala Main Road</p>
+                      <p>Electronic City, Bangalore - 560105</p>
+                      <p>Karnataka, India</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-green-50 rounded-xl p-6 card-hover">
+                <h4 className="font-bold text-green-900 mb-3">🚗 How to Reach:</h4>
+                <ul className="space-y-2 text-green-800">
+                  <li>• 5 minutes from Electronic City Metro Station</li>
+                  <li>• Near Infosys, TCS, and other IT companies</li>
+                  <li>• Well connected by BMTC buses</li>
+                  <li>• Ample parking space available</li>
+                </ul>
+              </div>
+              <div className="bg-orange-50 rounded-xl p-6 card-hover">
+                <h4 className="font-bold text-orange-900 mb-3">⏰ Visit Timings:</h4>
+                <div className="space-y-2 text-orange-800">
+                  <p><strong>Test Days:</strong> Saturday & Sunday (7:00 AM - 10:00 AM)</p>
+                  <p><strong>FastTrack Batch:</strong> Saturday & Sunday (4:30 PM - 7:30 PM)</p>
+                  <p><strong>Counseling:</strong> Monday to Friday (9:00 AM - 8:00 PM)</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-xl shadow-2xl overflow-hidden card-hover">
+              <div className="bg-blue-600 text-white p-4 text-center">
+                <h3 className="text-xl font-bold">📍 Our Location</h3>
+                <p className="text-blue-100">Electronic City, Bangalore</p>
+              </div>
+              <div className="relative">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3890.0234567890123!2d77.6648!3d12.8456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDUwJzQ0LjIiTiA3N8KwMzknNTMuMyJF!5e0!3m2!1sen!2sin!4v1234567890123!5m2!1sen!2sin"
+                  width="100%"
+                  height="400"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="MathAce Test Series Location - Electronic City, Bangalore"
+                  className="w-full"
+                ></iframe>
+                <div className="absolute bottom-4 left-4 bg-white bg-opacity-90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-semibold text-gray-900">MathAce Test Series</span>
+                  </div>
+                  <p className="text-xs text-gray-600">Electronic City, Bangalore</p>
+                </div>
+              </div>
+              <div className="p-4 bg-gray-50">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Phone className="h-4 w-4 text-green-600" />
+                    <span className="text-sm font-medium">+91 98765 43210</span>
+                  </div>
+                  <a
+                    href="https://maps.google.com/?q=Tirumala+Residency+Hulimangala+Main+Road+Electronic+City+Bangalore+560105"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors button-hover"
+                  >
+                    Open in Google Maps
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
